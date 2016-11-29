@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller=".AddProjectController">
+    <stylesheets>
+        <URL value="@/styles/addproject.css" />
+    </stylesheets>
+   <children>
+      <Button fx:id="addProjectButton" layoutX="521.0" layoutY="355.0" mnemonicParsing="false" onAction="#addProject" text="Add" />
+      <Button fx:id="cancelButton" layoutX="448.0" layoutY="355.0" mnemonicParsing="false" text="Cancel" />
+      <TextField fx:id="nameTextField" layoutX="40.0" layoutY="69.0" />
+   </children>
+</AnchorPane>

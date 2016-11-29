@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="437.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.negod.timecheck.controller.TodayTabController">
+    <children>
+        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
+      <MenuBar layoutY="-2.0" prefHeight="32.0" prefWidth="582.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TabPane layoutY="31.0" prefHeight="406.0" prefWidth="582.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Today">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="405.0" prefWidth="582.0">
+                     <children>
+                        <ProgressBar fx:id="workDayProgressBar" blendMode="DARKEN" layoutX="214.0" layoutY="48.0" prefHeight="23.0" prefWidth="341.0" progress="0.0" stylesheets="@../styles/progressbar.css">
+                           <effect>
+                              <ColorAdjust />
+                           </effect></ProgressBar>
+                        <Label layoutX="14.0" layoutY="15.0" prefHeight="21.0" prefWidth="69.0" text="Todays date:" />
+                        <Label layoutX="14.0" layoutY="37.0" text="Total time:" />
+                        <Label layoutX="15.0" layoutY="58.0" text="Over time:" />
+                        <Label fx:id="todayDateLabel" layoutX="91.0" layoutY="16.0" prefHeight="21.0" prefWidth="86.0" text="Label" />
+                        <Label fx:id="totalTimeLabel" layoutX="91.0" layoutY="39.0" text="Label" />
+                        <Label fx:id="overTimeLabel" layoutX="91.0" layoutY="58.0" text="Label" />
+                        <Separator layoutX="10.0" layoutY="119.0" prefHeight="2.0" prefWidth="557.0" />
+                        <Label layoutX="216.0" layoutY="16.0" text="Workday completed %" />
+                        <Button fx:id="startDayButton" layoutX="16.0" layoutY="306.0" mnemonicParsing="false" onAction="#handleStartDayButton" prefHeight="52.0" prefWidth="550.0" text="Start workday" />
+                        <Button fx:id="breakButton" layoutX="16.0" layoutY="245.0" mnemonicParsing="false" onAction="#handleBreakButton" prefHeight="52.0" prefWidth="550.0" text="Start break" />
+                        <ComboBox fx:id="projectCombo" layoutX="133.0" layoutY="138.0" prefHeight="31.0" prefWidth="432.0" />
+                        <Label layoutX="16.0" layoutY="143.0" text="Current project" />
+                        <Label layoutX="16.0" layoutY="195.0" text="Current activity" />
+                        <ComboBox layoutX="133.0" layoutY="190.0" prefWidth="432.0" />
+                        <Label layoutX="15.0" layoutY="78.0" text="Break:" />
+                        <Label fx:id="breakTimeLabel" layoutX="91.0" layoutY="78.0" text="Label" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Week">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="Year">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+          <Tab text="Settings">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TabPane layoutX="1.0" layoutY="-1.0" prefHeight="384.0" prefWidth="582.0" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                            <Tab text="Projects and activities">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TabPane layoutX="1.0" prefHeight="349.0" prefWidth="582.0" tabClosingPolicy="UNAVAILABLE">
+                                            <tabs>
+                                              <Tab fx:id="projectsList" text="Projects">
+                                                <content>
+                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="372.0" prefWidth="582.0">
+                                                         <children>
+                                                            <TableView fx:id="projectsTable" prefHeight="237.0" prefWidth="582.0" />
+                                                            <Button fx:id="addProjectButton" layoutX="480.0" layoutY="252.0" mnemonicParsing="false" onAction="#openAddProject" prefHeight="31.0" prefWidth="88.0" text="Button" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                </content>
+                                              </Tab>
+                                              <Tab fx:id="activitiesList" text="Activities">
+                                                <content>
+                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                </content>
+                                              </Tab>
+                                                <Tab fx:id="companiesList" text="Companies">
+                                                  <content>
+                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                         <children>
+                                                            <TableView layoutX="-3.0" prefHeight="318.0" prefWidth="582.0">
+                                                              <columns>
+                                                                <TableColumn prefWidth="75.0" text="C1" />
+                                                                <TableColumn prefWidth="75.0" text="C2" />
+                                                              </columns>
+                                                            </TableView>
+                                                         </children>
+                                                      </AnchorPane>
+                                                  </content>
+                                                </Tab>
+                                            </tabs>
+                                          </TabPane>
+                                       </children></AnchorPane>
+                              </content>
+                            </Tab>
+                            <Tab text="App settings">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </Tab>
+                              <Tab text="Shortcuts">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                </content>
+                              </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Accordion />
+    </children>
+</AnchorPane>
