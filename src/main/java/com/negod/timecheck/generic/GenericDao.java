@@ -354,7 +354,7 @@ public class GenericDao<T extends GenericEntity> extends EventHandler {
      */
     protected Optional<T> get(CriteriaQuery<T> query) throws DaoException {
         log.trace("Getting object of type {}", entityClass.getSimpleName());
-        try {
+        try {            
             TypedQuery<T> typedQuery = em.createQuery(query);
             return executeTypedQuery(typedQuery);
         } catch (Exception e) {

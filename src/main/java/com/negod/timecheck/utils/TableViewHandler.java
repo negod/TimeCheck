@@ -58,6 +58,10 @@ public class TableViewHandler<E extends GenericEntity, T extends GenericDao> ext
             log.error("Error when populating table for type {}", super.getDao().get().getClassName());
         }
     }
+    
+    public E getSelectedValue(){
+        return tableView.getSelectionModel().getSelectedItem();
+    }
 
     @Override
     public void onDataChange(ListChangeListener.Change change) {

@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
  * @author Joakim Johansson ( joakimjohansson@outlook.com )
  */
 public class TextFieldSetter {
-
+    
     public static void setTextFieldValue(final String id, final String promptText, final TextField textField) {
         Platform.runLater(new Runnable() {
             @Override
@@ -23,5 +23,16 @@ public class TextFieldSetter {
             }
         });
     }
-
+    
+    public static void setTextFieldValue(final String id, final String promptText, final TextField textField, String textValue) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                textField.setId(id);
+                textField.setPromptText(promptText);
+                textField.setText(textValue);
+            }
+        });
+    }
+    
 }

@@ -7,6 +7,7 @@ import com.negod.timecheck.database.entity.Project;
 import com.negod.timecheck.database.exceptions.DaoException;
 import com.negod.timecheck.event.Event;
 import com.negod.timecheck.event.EventHandler;
+import com.negod.timecheck.event.events.GenericObjectEvents;
 import com.negod.timecheck.event.exceptions.DialogException;
 import com.negod.timecheck.event.exceptions.TypeCastException;
 import com.negod.timecheck.event.events.TimerEvent;
@@ -65,6 +66,7 @@ public class TodayTabController extends EventHandler implements Initializable {
 
     private TimeCheckTimer timer = new TimeCheckTimer();
     private ProjectDao projectDao;
+    private TableViewHandler tableHandler;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -81,7 +83,7 @@ public class TodayTabController extends EventHandler implements Initializable {
                     .setDao(projectDao)
                     .setFieldName("name").build();
 
-            TableViewHandler tableHandler = TableViewFactory.getNewInstance()
+            tableHandler = TableViewFactory.getNewInstance()
                     .setDao(projectDao)
                     .setTableView(projectsTable).build();
 
@@ -144,10 +146,23 @@ public class TodayTabController extends EventHandler implements Initializable {
     }
 
     @FXML
-    private void openAddProject(ActionEvent event) throws DialogException {
+    private void openAddProject(ActionEvent event) throws DialogException, DaoException {
         Optional<Project> showModalAndWait = DialogFactory.getNewInstance()
                 .setDao(projectDao)
                 .setEntity(null)
                 .build().showModalAndWait();
+    }
+
+    @FXML
+    private void openUpdateProject(ActionEvent event) throws DialogException, DaoException {
+        Optional<Project> showModalAndWait = DialogFactory.getNewInstance()
+                .setDao(projectDao)
+                .setEntity(tableHandler.getSelectedValue())
+                .build().showModalAndWait();
+    }
+
+    @FXML
+    private void deleteProject(ActionEvent event) throws DialogException {
+        super.sendEvent(GenericObjectEvents.DELETE, tableHandler.getSelectedValue());
     }
 }

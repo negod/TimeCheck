@@ -6,6 +6,7 @@
 package com.negod.timecheck.utils;
 
 import com.negod.timecheck.TextFieldSetter;
+import com.negod.timecheck.database.exceptions.DaoException;
 import com.negod.timecheck.event.ComponentEventHandler;
 import com.negod.timecheck.event.events.GenericObjectEvents;
 import com.negod.timecheck.generic.GenericDao;
@@ -40,8 +41,11 @@ public class DialogHandler<E extends GenericEntity, T extends GenericDao> extend
     GenericObjectEvents OBJECT_EVENT;
     Optional<E> entity = Optional.empty();
 
-    public DialogHandler(Optional<E> entity, T dao) {
+    public DialogHandler(Optional<E> entity, T dao) throws DaoException {
         super(dao);
+        if (entity == null) {
+            throw new DaoException("Entity cannot be null! aborting initialization");
+        }
         this.entity = entity;
         OBJECT_EVENT = getObjectEventType();
     }
@@ -58,7 +62,17 @@ public class DialogHandler<E extends GenericEntity, T extends GenericDao> extend
         for (String entityField : entityFields) {
 
             TextField field = new TextField();
-            TextFieldSetter.setTextFieldValue(entityField, entityField, field);
+
+            if (OBJECT_EVENT.equals(GenericObjectEvents.CREATE)) {
+                TextFieldSetter.setTextFieldValue(entityField, entityField, field);
+            } else {
+                Optional<Object> fieldValue = FieldHelper.getFieldValue(entity.get(), entityField);
+                if (fieldValue.isPresent()) {
+                    TextFieldSetter.setTextFieldValue(entityField, entityField, field, fieldValue.get().toString());
+                } else {
+                    TextFieldSetter.setTextFieldValue(entityField, entityField, field);
+                }
+            }
 
 //            field.textProperty().addListener((observable, oldValue, newValue) -> {
 //                System.out.println("Tjoho!! New value in " + entityField);
@@ -74,13 +88,16 @@ public class DialogHandler<E extends GenericEntity, T extends GenericDao> extend
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         Map<String, TextField> textFields = getTextFields();
 
-        dialog.setTitle(getObjectEventType() + StringUtils.capitalize(super.getDao().get().getClassName()));
-        dialog.setHeaderText(getObjectEventType() + StringUtils.capitalize(super.getDao().get().getClassName()));
+        String eventName = StringUtils.capitalize(StringUtils.lowerCase(getObjectEventType().name()));
+        String title = eventName + " " + StringUtils.capitalize(StringUtils.lowerCase(super.getDao().get().getClassName()));
+
+        dialog.setTitle(title);
+        dialog.setHeaderText(dialog.getTitle());
 
         // Set the icon (must be included in the project).
         //dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
         // Set the button types.
-        ButtonType loginButtonType = new ButtonType(StringUtils.capitalize(OBJECT_EVENT.name()), ButtonBar.ButtonData.OK_DONE);
+        ButtonType loginButtonType = new ButtonType(eventName, ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
 
         GridPane grid = new GridPane();
@@ -132,7 +149,7 @@ public class DialogHandler<E extends GenericEntity, T extends GenericDao> extend
             Optional<E> convertToEntity = convertToEntity(createMapFromResponse);
 
             if (convertToEntity.isPresent()) {
-                super.sendEvent(GenericObjectEvents.CREATE, convertToEntity.get());
+                super.sendEvent(OBJECT_EVENT, convertToEntity.get());
             }
 
             super.unRegister();
@@ -160,7 +177,13 @@ public class DialogHandler<E extends GenericEntity, T extends GenericDao> extend
 
         try {
 
-            E entityClass = (E) super.getDao().get().getEntityClass().newInstance();
+            E entityClass;
+
+            if (entity.isPresent()) {
+                entityClass = entity.get();
+            } else {
+                entityClass = (E) super.getDao().get().getEntityClass().newInstance();
+            }
 
             Set<String> entityFields = super.getDao().get().getEntityFields();
             for (String entityField : entityFields) {

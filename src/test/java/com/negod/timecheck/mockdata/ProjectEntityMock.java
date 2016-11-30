@@ -6,19 +6,20 @@
 package com.negod.timecheck.mockdata;
 
 import com.negod.timecheck.database.entity.Project;
+import org.jgroups.util.UUID;
 
 /**
  *
  * @author Joakim Johansson ( joakimjohansson@outlook.com )
  */
 public class ProjectEntityMock {
-
-    public static final String NAME = "PROJECT_NAME";
-
+    
+    public static final String NAME = UUID.randomUUID().toString();
+    
     public static Project getProject() {
         Project project = new Project();
         project.setName(NAME);
         return project;
     }
-
+    
 }

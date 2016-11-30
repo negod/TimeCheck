@@ -5,6 +5,7 @@
  */
 package com.negod.timecheck.utils;
 
+import com.negod.timecheck.database.exceptions.DaoException;
 import com.negod.timecheck.event.exceptions.DialogException;
 import com.negod.timecheck.generic.GenericDao;
 import com.negod.timecheck.generic.GenericEntity;
@@ -35,7 +36,7 @@ public class DialogFactory<E extends GenericEntity, T extends GenericDao> {
         return this;
     }
 
-    public DialogHandler build() throws DialogException {
+    public DialogHandler build() throws DialogException, DaoException {
         if (dao.isPresent()) {
             return new DialogHandler(entity, dao.get());
         } else {
